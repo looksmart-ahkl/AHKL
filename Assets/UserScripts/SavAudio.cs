@@ -34,8 +34,8 @@ public static class SavAudio {
 	const int HEADER_SIZE = 44;
 
 	public static bool Save(string filename, AudioClip clip) {
-		if (!filename.ToLower().EndsWith(".mp3")) {
-			filename += ".mp3";
+		if (!filename.ToLower().EndsWith(".wav")) {
+			filename += ".wav";
 		}
 
 		var filepath = Path.Combine(Application.dataPath, filename);

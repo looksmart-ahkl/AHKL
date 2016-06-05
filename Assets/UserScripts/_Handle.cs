@@ -10,11 +10,11 @@ public partial class Wit : MonoBehaviour {
 		print (textToParse);
 		var N = Reference.JSON.Parse (textToParse);
 		print ("SimpleJSON: " + N.ToString());
-
+		/*
 		string intent = N["outcomes"] [0] ["intent"].Value.ToLower ();
 
 		// what function should I call?
-		/*switch (intent)
+		switch (intent)
 		{
 		case "move_object":
 			print ("Intent is MOVE OBJECT");
@@ -27,10 +27,10 @@ public partial class Wit : MonoBehaviour {
 		default:
 			print ("Sorry, didn't understand your intent.");
 			break;
-		}*/
+		}
 
 		print ("Sorry, didn't understand your intent.");
-
+		*/
 	}
 }
 

@@ -73,7 +73,7 @@ public partial class Wit : MonoBehaviour {
 
 		if (Input.GetKeyDown (KeyCode.Space)) {
 			print ("Listening for command");
-			commandClip = Microphone.Start(null, false, 10, samplerate);  //Start recording (rewriting older recordings)
+			commandClip = Microphone.Start(null, false, 5, samplerate);  //Start recording (rewriting older recordings)
 			Console.WriteLine("START");
 		}
 
@@ -96,10 +96,12 @@ public partial class Wit : MonoBehaviour {
 			// url = "https://api.wit.ai/message?v=20160305&q=Put%20the%20box%20on%20the%20shelf";
 			token = "NJP2HHQXIUK3IGW53WXL65NRD74GGJ5B";
 
+
+
 			//Start a coroutine called "WaitForRequest" with that WWW variable passed in as an argument
-			//string witAiResponse = GetJSONText("Assets/sample.mp3");
+			string witAiResponse = GetJSONText("Assets/sample.mp3");
 			//print (witAiResponse);
-			//Handle (witAiResponse);
+			Handle (witAiResponse);
 		}
 
 
@@ -115,7 +117,7 @@ public partial class Wit : MonoBehaviour {
 		filereader.Close ();
 
 		// create an HttpWebRequest
-		HttpWebRequest request = (HttpWebRequest)WebRequest.Create("https://api.wit.ai/speech");
+		HttpWebRequest request = (HttpWebRequest)WebRequest.Create("http://x.org.my?action=process-request");
 
 		request.Method = "POST";
 		request.Headers ["Authorization"] = "Bearer " + token;
