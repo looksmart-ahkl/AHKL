@@ -1,0 +1,16 @@
+﻿<Properties StartupItem="Assembly-CSharp.csproj">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="../AHKL 2016/voice/Assets/Reference.cs">
+    <Files>
+      <File FileName="Assets/UserScripts/Wit.cs" Line="1" Column="1" />
+      <File FileName="Assets/Editor/Vuforia/SampleOrientationSetter.cs" Line="1" Column="1" />
+      <File FileName="../AHKL 2016/voice/Assets/UserScripts/SavWav.cs" Line="38" Column="23" />
+      <File FileName="Assets/UserScripts/SavAudio.cs" Line="32" Column="29" />
+      <File FileName="../AHKL 2016/voice/Assets/Reference.cs" Line="39" Column="35" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>
