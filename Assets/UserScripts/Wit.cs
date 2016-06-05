@@ -33,6 +33,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
+using System.Threading;
 
 
 public partial class Wit : MonoBehaviour {
@@ -42,6 +43,7 @@ public partial class Wit : MonoBehaviour {
 	// Audio variables
 	public AudioClip commandClip;
 	int samplerate;
+	int waitDuration;
 
 	// API access parameters
 	string url;
@@ -51,22 +53,82 @@ public partial class Wit : MonoBehaviour {
 	// Movement variables
 	public float moveTime;
 	public float yOffset;
+	public bool isThreadRunning = false;
+	private int running;
 
 	// GameObject to use as a default spawn point
 	public GameObject spawnPoint;
 
 	// Use this for initialization
 	void Start () {
+		waitDuration = 5;
+		samplerate = 16000;
+	}
 
-		while (true) {
-			samplerate = 16000;
+	// Update is called once per frame
+	void Update () {
+		/*if (Interlocked.CompareExchange(ref running, 1, 0) == 0)
+		{
+			print ("New thread");
+			Thread t = new Thread
+				(
+					() =>
+					{
+						try
+						{
+							RecordAudio(5);
+						}
+						catch
+						{
+							//Without the catch any exceptions will be unhandled
+							//(Maybe that's what you want, maybe not*)
+						}
+						finally
+						{
+							//Regardless of exceptions, we need this to happen:
+							running = 0;
+						}
+					}
+				);
+			t.IsBackground = true;
+			t.Name = "rAudio";
+			print ("New thread starting");
+			t.Start();
+		}
+		else
+		{
+			System.Diagnostics.Debug.WriteLine("rAudio is already Running.");
+			print ("Thread exist");
+		}*/   
 
-			print ("Running");
+		/*if (!isThreadRunning) {
+			var rAudio = new Thread (RecordAudio(5));
+			rAudio.IsBackground = true;
+			rAudio.Name = "rAudio";
+			rAudio.Start ();
+		}*/
 
+		RecordAudio (waitDuration);
+	}
+
+	IEnumerator Wait(int duration)
+	{
+		print ("Start waiting sequence");
+		yield return new WaitForSeconds(duration);   //Wait
+		print ("Waiting sequence ends");
+	}
+
+	void RecordAudio(int duration)
+	{
+		print ("Running");
+		
+		if (Input.GetKeyDown (KeyCode.Space)) {
+			print ("Start Recording");
 			commandClip = Microphone.Start (null, false, 3, samplerate);  //Start recording (rewriting older recordings)
+		}
 
+		if (Input.GetKeyUp (KeyCode.Space)) {
 			print ("Stop Recording");
-
 			// Save the audio file
 			Microphone.End (null);
 			SavAudio.Save ("sample", commandClip);
@@ -81,12 +143,6 @@ public partial class Wit : MonoBehaviour {
 			//Start a coroutine called "WaitForRequest" with that WWW variable passed in as an argument
 			string witAiResponse = GetJSONText ("Assets/sample.wav");
 		}
-	}
-
-	// Update is called once per frame
-	void Update () {
-		
-
 	}
 
 	string GetJSONText(string file) {
