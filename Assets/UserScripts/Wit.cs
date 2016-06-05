@@ -57,26 +57,13 @@ public partial class Wit : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-
-		// If you are a Windows user and receiving a Tlserror
-		// See: https://github.com/afauch/wit3d/issues/2
-		// Uncomment the line below to bypass SSL
-		// System.Net.ServicePointManager.ServerCertificateValidationCallback = (a, b, c, d) => { return true; };
-
-		// set samplerate to 16000 for wit.ai
 		samplerate = 16000;
-
-	}
-
-	// Update is called once per frame
-	void Update () {
 
 		if (Input.GetKeyDown (KeyCode.Space)) {
 			print ("Listening for command");
-			commandClip = Microphone.Start(null, false, 5, samplerate);  //Start recording (rewriting older recordings)
+			commandClip = Microphone.Start(null, false, 3, samplerate);  //Start recording (rewriting older recordings)
 			Console.WriteLine("START");
 		}
-
 
 		if (Input.GetKeyUp (KeyCode.Space)) {
 			Console.WriteLine("STOP");
@@ -88,7 +75,7 @@ public partial class Wit : MonoBehaviour {
 			SavAudio.Save("sample", commandClip);
 			if (commandClip != null)
 				Console.WriteLine("GOT IT");
-			
+
 			// At this point, we can delete the existing audio clip
 			commandClip = null;
 
@@ -96,14 +83,16 @@ public partial class Wit : MonoBehaviour {
 			// url = "https://api.wit.ai/message?v=20160305&q=Put%20the%20box%20on%20the%20shelf";
 			token = "NJP2HHQXIUK3IGW53WXL65NRD74GGJ5B";
 
-
-
 			//Start a coroutine called "WaitForRequest" with that WWW variable passed in as an argument
 			string witAiResponse = GetJSONText("Assets/sample.mp3");
 			//print (witAiResponse);
-			Handle (witAiResponse);
+			//Handle (witAiResponse);
 		}
+	}
 
+	// Update is called once per frame
+	void Update () {
+		
 
 	}
 
