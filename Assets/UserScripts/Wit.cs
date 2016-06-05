@@ -34,6 +34,8 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading;
+using HttpUtils;
+using LitJson;
 
 
 public partial class Wit : MonoBehaviour {
@@ -58,6 +60,13 @@ public partial class Wit : MonoBehaviour {
 
 	// GameObject to use as a default spawn point
 	public GameObject spawnPoint;
+
+	private string jsonString;
+	private JsonData itemData;
+
+	private string display;
+
+	public TextMesh displayLabel;
 
 	// Use this for initialization
 	void Start () {
@@ -119,13 +128,13 @@ public partial class Wit : MonoBehaviour {
 	}
 
 	void RecordAudio(int duration)
-	{
-		print ("Running");
-		
+	{		
 		if (Input.GetKeyDown (KeyCode.Space)) {
 			print ("Start Recording");
 			commandClip = Microphone.Start (null, false, 3, samplerate);  //Start recording (rewriting older recordings)
-		}
+		Wait(360);
+		this.Show();		
+	}
 
 		if (Input.GetKeyUp (KeyCode.Space)) {
 			print ("Stop Recording");
@@ -140,10 +149,67 @@ public partial class Wit : MonoBehaviour {
 			// url = "https://api.wit.ai/message?v=20160305&q=Put%20the%20box%20on%20the%20shelf";
 			token = "NJP2HHQXIUK3IGW53WXL65NRD74GGJ5B";
 
+		this.HttpUploadFile("http://x.org.my?action=process-request", 
+			@"Assets/sample.wav", "file", "audio/wav");
 			//Start a coroutine called "WaitForRequest" with that WWW variable passed in as an argument
-			string witAiResponse = GetJSONText ("Assets/sample.wav");
+			//string witAiResponse = GetJSONText ("Assets/sample.wav");
 		}
 	}
+	
+public void HttpUploadFile(string url, string file, string paramName, string contentType) {
+	string boundary = "---------------------------" + DateTime.Now.Ticks.ToString("x");
+	byte[] boundarybytes = System.Text.Encoding.ASCII.GetBytes("\r\n--" + boundary + "\r\n");
+
+	HttpWebRequest wr = (HttpWebRequest)WebRequest.Create(url);
+	wr.ContentType = "multipart/form-data; boundary=" + boundary;
+	wr.Method = "POST";
+	wr.KeepAlive = true;
+	wr.Credentials = System.Net.CredentialCache.DefaultCredentials;
+
+	Stream rs = wr.GetRequestStream();
+
+	string formdataTemplate = "Content-Disposition: form-data; name=\"{0}\"\r\n\r\n{1}";
+
+	rs.Write(boundarybytes, 0, boundarybytes.Length);
+
+	string headerTemplate = "Content-Disposition: form-data; name=\"{0}\"; filename=\"{1}\"\r\nContent-Type: {2}\r\n\r\n";
+	string header = string.Format(headerTemplate, paramName, file, contentType);
+	byte[] headerbytes = System.Text.Encoding.UTF8.GetBytes(header);
+	rs.Write(headerbytes, 0, headerbytes.Length);
+
+	FileStream fileStream = new FileStream(file, FileMode.Open, FileAccess.Read);
+	byte[] buffer = new byte[4096];
+	int bytesRead = 0;
+	while ((bytesRead = fileStream.Read(buffer, 0, buffer.Length)) != 0) {
+		rs.Write(buffer, 0, bytesRead);
+	}
+	fileStream.Close();
+
+	byte[] trailer = System.Text.Encoding.ASCII.GetBytes("\r\n--" + boundary + "--\r\n");
+	rs.Write(trailer, 0, trailer.Length);
+	rs.Close();
+	print("print1");
+
+	WebResponse wresp = null;
+	try {
+		print("print2");
+		wresp = wr.GetResponse();
+		Stream stream2 = wresp.GetResponseStream();
+		StreamReader reader2 = new StreamReader(stream2);
+		print("print3 " + reader2.ReadToEnd());
+		string jsonStr = reader2.ReadToEnd();
+	} catch(Exception ex) {
+		print("print4: " + ex.Message);
+		if(wresp != null) {
+			wresp.Close();
+			wresp = null;
+			print("print5");
+		}
+	} finally {
+		wr = null;
+		print("print6");
+	}
+}
 
 	string GetJSONText(string file) {
 
@@ -155,13 +221,16 @@ public partial class Wit : MonoBehaviour {
 		filereader.Close ();
 
 		// create an HttpWebRequest
+	print("Upload file");
 		HttpWebRequest request = (HttpWebRequest)WebRequest.Create("http://x.org.my?action=process-request");
-
+		
 		request.Method = "POST";
-		request.Headers ["Authorization"] = "Bearer " + token;
-		request.ContentType = "audio/wav";
-		request.ContentLength = BA_AudioFile.Length;
-		request.GetRequestStream ().Write (BA_AudioFile, 0, BA_AudioFile.Length);
+		request.ContentType = "multipart/form-data";
+		request.KeepAlive = true;
+
+		Stream rs = request.GetRequestStream ();
+
+
 
 		// Process the wit.ai response
 		try
@@ -185,6 +254,25 @@ public partial class Wit : MonoBehaviour {
 			return "HTTP ERROR";
 		}       
 	}
+
+public void Show () {
+
+	jsonString = File.ReadAllText (Application.dataPath + "/recipe.json");
+	itemData = JsonMapper.ToObject (jsonString);
+
+	string display = (string) itemData ["response"] ["text"];
+	print (display);
+
+	displayLabel = (TextMesh)GameObject.Find ("label").GetComponent<TextMesh>();
+
+
+
+	// here we change the value of displayed text
+	displayLabel.text = display;
+	//StartCoroutine (LoadImg ());
+}
+
+
 
 }
 

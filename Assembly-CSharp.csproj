@@ -6,7 +6,7 @@
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <RootNamespace></RootNamespace>
-    <ProjectGuid>{8ABACF1D-7368-DCFD-78FB-8D9BA92ADA2C}</ProjectGuid>
+    <ProjectGuid>{4A30040D-9C88-7F16-F593-BF7BDB5B8183}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <AssemblyName>Assembly-CSharp</AssemblyName>
@@ -69,6 +69,7 @@
      <Compile Include="Assets\Scripts\ViewModeManager.cs" />
      <Compile Include="Assets\Scripts\ViewTrigger.cs" />
      <Compile Include="Assets\UserScripts\EmptyClass.cs" />
+     <Compile Include="Assets\UserScripts\Misc.cs" />
      <Compile Include="Assets\UserScripts\SavAudio.cs" />
      <Compile Include="Assets\UserScripts\Wit.cs" />
      <Compile Include="Assets\UserScripts\_Handle.cs" />
@@ -137,12 +138,15 @@
  <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>
  <Reference Include="Vuforia.UnityExtensions">
- <HintPath>/Users/MXChan/Desktop/looksmart/Assets/Vuforia/Scripts/Internal/Vuforia.UnityExtensions.dll</HintPath>
+ <HintPath>/Users/keatwei/VM/Projects/AHKL/Assets/Vuforia/Scripts/Internal/Vuforia.UnityExtensions.dll</HintPath>
+ </Reference>
+ <Reference Include="LitJSON">
+ <HintPath>/Users/keatwei/VM/Projects/AHKL/Assets/LitJSON.dll</HintPath>
  </Reference>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="Assembly-CSharp-firstpass.csproj">
-      <Project>{5E97E160-8CDC-CF4E-2E60-9CD4694080FC}</Project>      <Name>Assembly-CSharp-firstpass</Name>    </ProjectReference>
+      <Project>{7501AF4B-DA39-3E0A-D746-F19674537527}</Project>      <Name>Assembly-CSharp-firstpass</Name>    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
