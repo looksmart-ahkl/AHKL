@@ -57,23 +57,30 @@ public partial class Wit : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		samplerate = 16000;
 
-		commandClip = Microphone.Start(null, false, 3, samplerate);  //Start recording (rewriting older recordings)
+		while (true) {
+			samplerate = 16000;
 
-		// Save the audio file
-		Microphone.End(null);
-		SavAudio.Save("sample", commandClip);
+			print ("Running");
 
-		// At this point, we can delete the existing audio clip
-		commandClip = null;
+			commandClip = Microphone.Start (null, false, 3, samplerate);  //Start recording (rewriting older recordings)
 
-		//Grab the most up-to-date JSON file
-		// url = "https://api.wit.ai/message?v=20160305&q=Put%20the%20box%20on%20the%20shelf";
-		token = "NJP2HHQXIUK3IGW53WXL65NRD74GGJ5B";
+			print ("Stop Recording");
 
-		//Start a coroutine called "WaitForRequest" with that WWW variable passed in as an argument
-		string witAiResponse = GetJSONText("Assets/sample.mp3");
+			// Save the audio file
+			Microphone.End (null);
+			SavAudio.Save ("sample", commandClip);
+
+			// At this point, we can delete the existing audio clip
+			commandClip = null;
+
+			//Grab the most up-to-date JSON file
+			// url = "https://api.wit.ai/message?v=20160305&q=Put%20the%20box%20on%20the%20shelf";
+			token = "NJP2HHQXIUK3IGW53WXL65NRD74GGJ5B";
+
+			//Start a coroutine called "WaitForRequest" with that WWW variable passed in as an argument
+			string witAiResponse = GetJSONText ("Assets/sample.wav");
+		}
 	}
 
 	// Update is called once per frame
