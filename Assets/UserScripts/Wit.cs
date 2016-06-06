@@ -132,8 +132,6 @@ public partial class Wit : MonoBehaviour {
 		if (Input.GetKeyDown (KeyCode.Space)) {
 			print ("Start Recording");
 			commandClip = Microphone.Start (null, false, 3, samplerate);  //Start recording (rewriting older recordings)
-		Wait(360);
-		this.Show();		
 	}
 
 		if (Input.GetKeyUp (KeyCode.Space)) {
@@ -154,6 +152,10 @@ public partial class Wit : MonoBehaviour {
 			//Start a coroutine called "WaitForRequest" with that WWW variable passed in as an argument
 			//string witAiResponse = GetJSONText ("Assets/sample.wav");
 		}
+
+	if (Input.GetKeyDown (KeyCode.DownArrow)) {
+		this.Show();		
+	}
 	}
 	
 public void HttpUploadFile(string url, string file, string paramName, string contentType) {
@@ -256,6 +258,8 @@ public void HttpUploadFile(string url, string file, string paramName, string con
 	}
 
 public void Show () {
+
+
 
 	jsonString = File.ReadAllText (Application.dataPath + "/recipe.json");
 	itemData = JsonMapper.ToObject (jsonString);
